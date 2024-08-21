@@ -1,34 +1,31 @@
-#!/usr/bin/env python3
-import sys
-import math
+#!/usr/bin/python3
+"""factorize many numbers 
+ into a product of two smaller numbers."""
+from sys import argv
 
-def find_factors(n):
-    """Find two factors of n such that n = p * q."""
-    if n <= 1:
-        return None
-    # Check divisibility starting from the smallest prime number
-    limit = int(math.sqrt(n)) + 1
-    for p in range(2, limit):
-        if n % p == 0:
-            q = n // p
-            if p * q == n:
-                return (p, q)
-    return None
 
-def process_file(filename):
-    """Read numbers from file, factorize each, and print results."""
-    with open(filename, 'r') as file:
-        for line in file:
-            number = int(line.strip())
-            factors = find_factors(number)
-            if factors:
-                p, q = factors
-                print(f"{number}={p}*{q}")
+def factorize(value):
+    """"print a simple descomposition of an integer > 1"""
+    i = 2
+    if value < 2:
+        return
+    print()
+    print(value, "<- value-bef")
+    while value % i:
+        i += 1
+    print("{:.0f}={:.0f}*{:.0f}".format(value, value / i, i))
+    print(value, "<- value-aft")
+    print()
 
-if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: factors <file>")
-        sys.exit(1)
+if len(argv) != 2:
+    exit()
+try:
+    with open(argv[1]) as file:
+        line = file.readline()
 
-    filename = sys.argv[1]
-    process_file(filename)
+        while line != "":
+            value = int(line.split('\n')[0])
+            factorize(value)
+            line = file.readline()
+except:
+    pass
