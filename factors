@@ -1,31 +1,41 @@
-#!/usr/bin/python3
-"""Module that factorizes numbers into a product of two smaller numbers."""
-from sys import argv
+#!/usr/bin/env python3
+import sys
+import math
 
-def factorize(value):
-    """Print a simple decomposition of an integer > 1 into p * q."""
-    if value < 2:
-        return
-    
-    i = 2
-    while i <= value // 2:
-        if value % i == 0:
-            p = i
-            q = value // i
-            print(f"{value}={p}*{q}")
-            return
-        i += 1
+def smallest_factor(n):
+    """Find the smallest factor of n greater than 1."""
+    if n % 2 == 0:
+        return 2
+    limit = int(math.sqrt(n)) + 1
+    for i in range(3, limit, 2):
+        if n % i == 0:
+            return i
+    return n  # n is prime if no factors found
 
-if len(argv) != 2:
-    print("Usage: factors <file>")
-    exit(1)
+def factorize_number(n):
+    """Factorize number n into two smaller numbers p and q such that n = p * q."""
+    if n <= 1:
+        return None
+    p = smallest_factor(n)
+    q = n // p
+    if p > 1 and q > 1 and p * q == n:
+        return (p, q)
+    return None
 
-filename = argv[1]
-try:
+def process_file(filename):
+    """Read numbers from file, factorize each, and print results."""
     with open(filename, 'r') as file:
         for line in file:
-            value = int(line.strip())
-            factorize(value)
-except Exception as e:
-    print(f"Error: {e}")
-    exit(1)
+            number = int(line.strip())
+            factors = factorize_number(number)
+            if factors:
+                p, q = factors
+                print(f"{number}={p}*{q}")
+
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Usage: factors <file>")
+        sys.exit(1)
+
+    filename = sys.argv[1]
+    process_file(filename)
