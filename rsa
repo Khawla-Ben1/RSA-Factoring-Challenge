@@ -2,6 +2,7 @@
 import sys
 import math
 
+
 def is_prime(num):
     """Check if a number is prime."""
     if num <= 1:
@@ -35,6 +36,8 @@ def process_file(filename):
         if factors:
             p, q = factors
             print(f"{number}={p}*{q}")
+        else:
+            print("No prime factors found")
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
