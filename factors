@@ -2,24 +2,17 @@
 import sys
 import math
 
-def smallest_factor(n):
-    """Find the smallest factor of n greater than 1."""
-    if n % 2 == 0:
-        return 2
-    limit = int(math.sqrt(n)) + 1
-    for i in range(3, limit, 2):
-        if n % i == 0:
-            return i
-    return n  # n is prime if no factors found
-
-def factorize_number(n):
-    """Factorize number n into two smaller numbers p and q such that n = p * q."""
+def find_factors(n):
+    """Find two factors of n such that n = p * q."""
     if n <= 1:
         return None
-    p = smallest_factor(n)
-    q = n // p
-    if p > 1 and q > 1 and p * q == n:
-        return (p, q)
+    # Check divisibility starting from the smallest prime number
+    limit = int(math.sqrt(n)) + 1
+    for p in range(2, limit):
+        if n % p == 0:
+            q = n // p
+            if p * q == n:
+                return (p, q)
     return None
 
 def process_file(filename):
@@ -27,7 +20,7 @@ def process_file(filename):
     with open(filename, 'r') as file:
         for line in file:
             number = int(line.strip())
-            factors = factorize_number(number)
+            factors = find_factors(number)
             if factors:
                 p, q = factors
                 print(f"{number}={p}*{q}")
