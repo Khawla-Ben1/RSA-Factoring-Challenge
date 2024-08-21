@@ -1,31 +1,31 @@
 #!/usr/bin/python3
-"""factorize many numbers 
- into a product of two smaller numbers."""
+"""Module that factorizes numbers into a product of two smaller numbers."""
 from sys import argv
 
-
 def factorize(value):
-    """"print a simple descomposition of an integer > 1"""
-    i = 2
+    """Print a simple decomposition of an integer > 1 into p * q."""
     if value < 2:
         return
-    print()
-    print(value, "<- value-bef")
-    while value % i:
+    
+    i = 2
+    while i <= value // 2:
+        if value % i == 0:
+            p = i
+            q = value // i
+            print(f"{value}={p}*{q}")
+            return
         i += 1
-    print("{:.0f}={:.0f}*{:.0f}".format(value, value / i, i))
-    print(value, "<- value-aft")
-    print()
 
 if len(argv) != 2:
-    exit()
-try:
-    with open(argv[1]) as file:
-        line = file.readline()
+    print("Usage: factors <file>")
+    exit(1)
 
-        while line != "":
-            value = int(line.split('\n')[0])
+filename = argv[1]
+try:
+    with open(filename, 'r') as file:
+        for line in file:
+            value = int(line.strip())
             factorize(value)
-            line = file.readline()
-except:
-    pass
+except Exception as e:
+    print(f"Error: {e}")
+    exit(1)
